@@ -1,4 +1,4 @@
-require 'active_support/configurable'
+require 'active_support/ordered_options'
 
 module AjaxDatatablesRails
 
@@ -16,10 +16,15 @@ module AjaxDatatablesRails
   end
 
   class Configuration
-    include ActiveSupport::Configurable
+    class_attribute :config,
+      instance_predicate: false,
+      default: ActiveSupport::InheritableOptions.new({
+        # default db_adapter is pg (postgresql)
+        db_adapter: :pg,
+        paginator: :simple_paginator
+      })
 
-    # default db_adapter is pg (postgresql)
-    config_accessor(:db_adapter) { :pg }
-    config_accessor(:paginator) { :simple_paginator }
+    singleton_class.delegate :db_adapter, :db_adapter=, :paginator, :paginator=, to: :config
+    delegate :db_adapter, :db_adapter=, :paginator, :paginator=, to: :config
   end
 end

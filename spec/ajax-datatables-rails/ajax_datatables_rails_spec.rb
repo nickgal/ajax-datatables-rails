@@ -282,13 +282,6 @@ describe AjaxDatatablesRails::Configuration do
     end
   end
 
-  describe "custom config" do
-    it 'should accept db_adapter custom value' do
-      config.db_adapter = :mysql2
-      expect(config.db_adapter).to eq(:mysql2)
-    end
-  end
-
   describe '#typecast' do
     params = {
       :draw => '5',
@@ -329,6 +322,13 @@ describe AjaxDatatablesRails::Configuration do
     it 'returns TEXT if :db_adapter is :sqlite3' do
       allow_any_instance_of(AjaxDatatablesRails::Configuration).to receive(:db_adapter) { :sqlite3 }
       expect(datatable.send(:typecast)).to eq('TEXT')
+    end
+  end
+
+  describe "custom config" do
+    it 'should accept db_adapter custom value' do
+      config.db_adapter = :mysql2
+      expect(config.db_adapter).to eq(:mysql2)
     end
   end
 end
